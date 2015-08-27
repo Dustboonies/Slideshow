@@ -1,13 +1,55 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>JSDT_static</title>
-    <script type="text/javascript">
-      alert("hello world!");
+    <title>Dustin's Slideshow Project</title>
+
+    <a href="#" onClick="switchImage('slideImg')">play slide show</a>        	<!-- play slide show button -->
+    <script language="Javascript">
+
+
+      var interval = 1500;							<!-- Global Variables required for the slideshow -->
+      var random_display = 0;
+      var imageDir = "C:/Users/Dustin Feldsine/Desktop/images/"
+      var imageNum = 0;
+      
+      imageArray = new Array();
+      imageArray[imageNum++] = new imageItem(imageDir + ".01.jpg");		<!-- Adding images to the array of images to be displayed -->
+      imageArray[imageNum++] = new imageItem(imageDir + ".02.jpg");
+      imageArray[imageNum++] = new imageItem(imageDir + ".03.jpg");
+      var totalImages = imageArray.length;
+
+      function imageItem(image_location){					<!-- Retrieves the image from its location -->
+        this.image_item = new Image();
+        this.image_item.src = image_location;
+      }
+
+      function get_ImageItemLocation(imageObj){					<!-- Returns the location of the image -->
+        return(imageObj.image_item.src);
+      }
+
+      function randNum(x,y){
+        var range = y - x + 1;
+        return Math.floor(Math.random() * range) + x;
+      }
+
+      function getNextImage(){
+        if (random_display){
+          imageNum = randNum(0, totalImages-1);
+        }
+        else{
+          imageNum = (imageNum+1) % totalImages;
+        }
+        var new_image = get_ImageItemLocation(imageArray[imageNum]);
+        return(new_image);
+      }
+
+      function switchImage(place){
+        var new_image = getNextImage();
+        document[place].src = new_image;
+        var recur_call = "switchImage('"+place+"')";
+        timerID = setTimeout(recur_call, interval);
+      }
+
     </script>
    </head>
- <body>
-   <h1>JSDT Static HTML5 Page</h1>
- 
- </body>
 </html>
